@@ -1,0 +1,3 @@
+---
+# defaults file for koji-hub
+koji_hub_ssl: true

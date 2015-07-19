@@ -1,0 +1,10 @@
+[hub]
+
+DBName = koji
+DBUser = koji
+DBPass = {{ hostvars[groups['koji_db'][0]]['koji_db_pass'] }}
+KojiDir = /mnt/koji
+LoginCreatesUser = On
+KojiWebURL = http://{{ hostvars[groups['koji'][0]]['inventory_hostname'] }}/koji
+NotifyOnSuccess = True
+ProxyDNs = /C={{ hostvars[groups['koji'][0]]['countryName_default'] }}/ST={{ hostvars[groups['koji'][0]]['stateOrProvinceName_default'] }}/O={{ hostvars[groups['koji'][0]]['organizationName_default'] }}/OU=kojiweb/CN={{ hostvars[groups['koji'][0]]['CN'] }}

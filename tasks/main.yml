@@ -1,0 +1,32 @@
+---
+# tasks file for koji-hub
+
+- name: Install required Packages
+  yum: name={{item}} state=installed
+  with_items:
+    - koji-hub
+    - httpd
+    - mod_ssl
+    - mod_python
+  tags:
+    - hub  
+
+- name: Configure hub.conf
+  template: src=hub.conf.j2 dest=/etc/koji-hub/hub.conf owner=root group=root mode=0644
+  tags:
+    - hub  
+
+- name: Configure /etc/httpd/conf.d/kojihub.conf
+  template: src=apache_kojihub.conf.j2 dest=/etc/httpd/conf.d/kojihub.conf owner=root group=root mode=0644
+  tags:
+    - hub  
+
+- name: Configure /etc/httpd/conf.d/ssl.conf
+  template: src=ssl.conf.j2 dest=/etc/httpd/conf.d/ssl.conf owner=root group=root mode=0644
+  tags:
+    - hub  
+
+- name: "Ensure httpd is running"
+  service: name=httpd state=started enabled=yes
+  tags:
+    - hub  
