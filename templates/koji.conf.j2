@@ -1,0 +1,27 @@
+[koji]
+
+;configuration for koji cli tool
+
+;url of XMLRPC server
+server = http://{{ hostvars[groups['koji'][0]]['inventory_hostname'] }}/kojihub
+
+;url of web interface
+weburl = http://{{ hostvars[groups['koji_web'][0]]['inventory_hostname'] }}/koji
+
+;url of package download site
+topurl = http://{{ hostvars[groups['koji_web'][0]]['inventory_hostname'] }}/kojifiles
+
+;path to the koji top directory
+topdir = /mnt/koji
+
+;configuration for SSL authentication
+
+;client certificate
+cert = ~/.koji/client.crt
+
+;certificate of the CA that issued the client certificate
+ca = ~/.koji/clientca.crt
+
+;certificate of the CA that issued the HTTP server certificate
+serverca = ~/.koji/serverca.crt
+
