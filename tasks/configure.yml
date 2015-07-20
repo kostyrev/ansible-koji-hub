@@ -1,0 +1,43 @@
+---
+
+- name: Configure hub.conf
+  template: src=hub.conf.j2 dest=/etc/koji-hub/hub.conf owner=root group=root mode=0644
+  tags:
+    - hub  
+
+- name: Configure /etc/koji.conf
+  template: src=koji.conf.j2 dest=/etc/koji.conf owner=root group=root mode=0644
+  tags:
+    - hub
+
+- name: Configure /etc/httpd/conf.d/kojihub.conf
+  template: src=apache_kojihub.conf.j2 dest=/etc/httpd/conf.d/kojihub.conf owner=root group=root mode=0644
+  tags:
+    - hub  
+
+- name: Configure /etc/httpd/conf.d/ssl.conf
+  template: src=ssl.conf.j2 dest=/etc/httpd/conf.d/ssl.conf owner=root group=root mode=0644
+  tags:
+    - hub
+
+- name: Make /mnt/koji directory
+  file: path=/mnt/koji state=directory mode=0755 owner=root group=root
+  tags:
+    - hub
+    - dirs
+
+- name: Make directory tree for koji in /mnt/koji
+  file: path=/mnt/koji/{{ item }} state=directory mode=0755 owner=apache group=apache
+  with_items:
+    - packages
+    - repos
+    - work
+    - scratch
+  tags:
+    - hub
+    - dirs
+
+- name: "Ensure httpd is running"
+  service: name=httpd state=started enabled=yes
+  tags:
+    - hub

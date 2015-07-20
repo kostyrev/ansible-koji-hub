@@ -1,0 +1,54 @@
+---
+
+- name: Kojiadmin | Create kojiadmin user
+  user: name=kojiadmin state=present
+  tags:
+    - kojiadmin
+
+- name: Kojiadmin | Create /home/kojiadmin/.koji
+  file: path=/home/kojiadmin/.koji state=directory mode=0755
+  su: yes
+  su_user: kojiadmin
+  tags:
+    - kojiadmin
+
+- name: issue cert for kojiadmin
+  shell: "{{ ca_root_path }}/certgen.sh {{ item }}"
+  args:
+    creates: "{{ ca_root_path }}/certs/{{ item }}.crt"
+    chdir: "{{ ca_root_path }}"
+  with_items:
+    - kojiadmin
+
+- name: Kojiadmin | Copy kojiadmin pem file to ~/.koji/client.crt
+  shell: "cp -p /etc/pki/koji/pems/kojiadmin.pem /home/kojiadmin/.koji/client.crt"
+  args:
+    creates: /home/kojiadmin/.koji/client.crt
+  tags:
+    - kojiadmin
+
+# TODO debug why this block doesn't work
+# - name: Kojiadmin | Copy CA cert to kojiadmin home
+#   shell: "cp ${item.0} ${item.1}"
+#   with_items:
+#     - [ '/etc/pki/koji/koji_ca_cert.crt', '/home/kojiadmin/.koji/clientca.crt' ]
+#     - [ '/etc/pki/koji/koji_ca_cert.crt', '/home/kojiadmin/.koji/serverca.crt' ]
+#   args:
+#     creates: /home/kojiadmin/.koji/clientca.crt
+#   tags:
+#     - kojiadmin
+
+# But for now
+- name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/clientca.crt
+  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/kojiadmin/.koji/clientca.crt"
+  args:
+    creates: /home/kojiadmin/.koji/clientca.crt
+  tags:
+    - kojiadmin
+
+- name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/serverca.crt
+  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/kojiadmin/.koji/serverca.crt"
+  args:
+    creates: /home/kojiadmin/.koji/serverca.crt
+  tags:
+    - kojiadmin

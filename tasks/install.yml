@@ -1,0 +1,11 @@
+---
+
+- name: Install | Install required Packages
+  yum: name={{item}} state=installed
+  with_items:
+    - koji-hub
+    - httpd
+    - mod_ssl
+    - mod_python
+  tags:
+    - hub
