@@ -1,3 +1,4 @@
 ---
 # defaults file for koji-hub
 koji_hub_ssl: true
+koji_create_kojiadmin: true
