@@ -20,6 +20,18 @@
   with_items:
     - kojiadmin
 
+- name: make p12 cert for kojiadmin for importing to web-browser
+  shell: "{{ ca_root_path }}/webcertgen.sh {{ item }}"
+  args:
+    creates: "{{ ca_root_path }}/webcerts/{{ item }}_browser_cert.p12"
+    chdir: "{{ ca_root_path }}"
+  with_items:
+    - kojiadmin
+  tags:
+    - kojiadmin
+    - kojiadmin-cert
+    - kojiadmin-p12
+
 - name: Kojiadmin | Copy kojiadmin pem file to ~/.koji/client.crt
   shell: "cp -p /etc/pki/koji/pems/kojiadmin.pem /home/kojiadmin/.koji/client.crt"
   args:
