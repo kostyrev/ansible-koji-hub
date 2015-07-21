@@ -3,7 +3,7 @@
 - name: Configure hub.conf
   template: src=hub.conf.j2 dest=/etc/koji-hub/hub.conf owner=root group=root mode=0644
   tags:
-    - hub  
+    - hub
 
 - name: Configure /etc/koji.conf
   template: src=koji.conf.j2 dest=/etc/koji.conf owner=root group=root mode=0644
