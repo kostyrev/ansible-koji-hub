@@ -19,6 +19,9 @@
     chdir: "{{ ca_root_path }}"
   with_items:
     - kojiadmin
+  tags:
+    - kojiadmin
+    - kojiadmin-cert
 
 - name: make p12 cert for kojiadmin for importing to web-browser
   shell: "{{ ca_root_path }}/webcertgen.sh {{ item }}"
