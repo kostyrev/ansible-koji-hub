@@ -6,4 +6,8 @@
 - include: "configure.yml"
 
 - include: "kojiadmin.yml"
-  when: koji_create_kojiadmin
+  when: koji_hub_create_kojiadmin
+
+- name: "add builders"
+  include: "add_builders.yml"
+  when: koji_hub_add_builders

@@ -1,0 +1,11 @@
+---
+
+- name: Add builders | Do ddd them to database
+  su: yes
+  su_user: kojiadmin
+  shell: "/usr/bin/koji add-host {{ item }} x86_64 && touch /home/kojiadmin/.koji/.addbuilders.done"
+  args:
+    creates: /home/kojiadmin/.koji/.addbuilders.done
+  with_items: groups.koji_builder
+  tags:
+    - kojiadmin-add-hosts

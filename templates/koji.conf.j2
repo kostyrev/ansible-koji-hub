@@ -3,25 +3,25 @@
 ;configuration for koji cli tool
 
 ;url of XMLRPC server
-server = http://{{ hostvars[groups['koji'][0]]['inventory_hostname'] }}/kojihub
+server = {{ koji_hub_server }}
 
 ;url of web interface
-weburl = http://{{ hostvars[groups['koji_web'][0]]['inventory_hostname'] }}/koji
+weburl = {{ koji_hub_KojiWebURL }}
 
 ;url of package download site
-topurl = http://{{ hostvars[groups['koji_web'][0]]['inventory_hostname'] }}/kojifiles
+topurl = {{ koji_hub_topurl }}
 
 ;path to the koji top directory
-topdir = /mnt/koji
+topdir = {{ koji_hub_KojiDir }}
 
 ;configuration for SSL authentication
 
 ;client certificate
-cert = ~/.koji/client.crt
+cert = {{ koji_hub_cert }}
 
 ;certificate of the CA that issued the client certificate
-ca = ~/.koji/clientca.crt
+ca = {{ koji_hub_ca }}
 
 ;certificate of the CA that issued the HTTP server certificate
-serverca = ~/.koji/serverca.crt
+serverca = {{ koji_hub_serverca }}
 

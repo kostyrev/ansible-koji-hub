@@ -1,10 +1,13 @@
 [hub]
 
-DBName = koji
-DBUser = koji
-DBPass = {{ hostvars[groups['koji_db'][0]]['koji_db_pass'] }}
-KojiDir = /mnt/koji
-LoginCreatesUser = On
-KojiWebURL = http://{{ hostvars[groups['koji'][0]]['inventory_hostname'] }}/koji
-NotifyOnSuccess = True
-ProxyDNs = /C={{ hostvars[groups['koji'][0]]['countryName_default'] }}/ST={{ hostvars[groups['koji'][0]]['stateOrProvinceName_default'] }}/O={{ hostvars[groups['koji'][0]]['organizationName_default'] }}/CN={{ hostvars[groups['koji'][0]]['CN'] }}/emailAddress={{ hostvars[groups['koji'][0]]['koji_ca_emailAddress'] }}
+DBName = {{ koji_hub_DBName }}
+DBUser = {{ koji_hub_DBUser }}
+DBHost = {{ koji_hub_DBHost }}
+DBPass = {{ koji_hub_DBPass }}
+KojiDir = {{ koji_hub_KojiDir }}
+LoginCreatesUser = {{ koji_hub_LoginCreatesUser }}
+KojiWebURL = {{ koji_hub_KojiWebURL }}
+NotifyOnSuccess = {{ koji_hub_NotifyOnSuccess }}
+ProxyDNs = {{ koji_hub_ProxyDNs }}
+KojiDebug = {{ koji_hub_KojiDebug }}
+KojiTraceback = {{ koji_hub_KojiTraceback }}

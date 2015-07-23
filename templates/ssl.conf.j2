@@ -18,12 +18,12 @@ SSLEngine on
 SSLProtocol all -SSLv2
 SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
 
-SSLCertificateFile      /etc/pki/koji/certs/{{ ansible_fqdn }}.crt
-SSLCertificateKeyFile   /etc/pki/koji/private/{{ ansible_fqdn }}.key
-SSLCertificateChainFile /etc/pki/koji/koji_ca_cert.crt
-SSLCACertificateFile    /etc/pki/koji/koji_ca_cert.crt
-SSLVerifyClient         require
-SSLVerifyDepth          10
+SSLCertificateFile      {{ koji_hub_SSLCertificateFile }}
+SSLCertificateKeyFile   {{ koji_hub_SSLCertificateKeyFile }}
+SSLCertificateChainFile {{ koji_hub_SSLCertificateChainFile }}
+SSLCACertificateFile    {{ koji_hub_SSLCACertificateFile }}
+SSLVerifyClient         {{ koji_hub_SSLVerifyClient }}
+SSLVerifyDepth          {{ koji_hub_SSLVerifyDepth }}
 
 <Files ~ "\.(cgi|shtml|phtml|php3?)$">
     SSLOptions +StdEnvVars
