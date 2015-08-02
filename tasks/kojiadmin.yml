@@ -1,14 +1,16 @@
 ---
 
 - name: Kojiadmin | Create kojiadmin user
-  user: name=kojiadmin state=present
+  user: name={{ item }} state=present
+  with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
 
 - name: Kojiadmin | Create /home/kojiadmin/.koji
-  file: path=/home/kojiadmin/.koji state=directory mode=0755
+  file: path=/home/{{ item }}/.koji state=directory mode=0750
   su: yes
-  su_user: kojiadmin
+  su_user: "{{ item }}"
+  with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
 
@@ -17,8 +19,7 @@
   args:
     creates: "{{ ca_root_path }}/certs/{{ item }}.crt"
     chdir: "{{ ca_root_path }}"
-  with_items:
-    - kojiadmin
+  with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
     - kojiadmin-cert
@@ -28,17 +29,17 @@
   args:
     creates: "{{ ca_root_path }}/webcerts/{{ item }}_browser_cert.p12"
     chdir: "{{ ca_root_path }}"
-  with_items:
-    - kojiadmin
+  with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
     - kojiadmin-cert
     - kojiadmin-p12
 
 - name: Kojiadmin | Copy kojiadmin pem file to ~/.koji/client.crt
-  shell: "cp -p /etc/pki/koji/pems/kojiadmin.pem /home/kojiadmin/.koji/client.crt"
+  shell: "cp -p /etc/pki/koji/pems/{{ item }}.pem /home/{{ item }}/.koji/client.crt"
   args:
-    creates: /home/kojiadmin/.koji/client.crt
+    creates: "/home/{{ item }}/.koji/client.crt"
+  with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
 
@@ -55,15 +56,17 @@
 
 # But for now
 - name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/clientca.crt
-  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/kojiadmin/.koji/clientca.crt"
+  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/{{ item }}/.koji/clientca.crt"
   args:
-    creates: /home/kojiadmin/.koji/clientca.crt
+    creates: "/home/{{ item }}/.koji/clientca.crt"
+  with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
 
 - name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/serverca.crt
-  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/kojiadmin/.koji/serverca.crt"
+  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/{{ item }}/.koji/serverca.crt"
   args:
-    creates: /home/kojiadmin/.koji/serverca.crt
+    creates: "/home/{{ item }}/.koji/serverca.crt"
+  with_items: koji_hub_kojiadmins  
   tags:
     - kojiadmin

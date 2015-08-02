@@ -31,3 +31,5 @@ koji_hub_cert: ~/.koji/client.crt
 koji_hub_ca: ~/.koji/clientca.crt
 koji_hub_serverca: ~/.koji/serverca.crt
 
+koji_hub_kojiadmins:
+  - kojiadmin
