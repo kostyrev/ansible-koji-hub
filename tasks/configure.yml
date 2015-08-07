@@ -14,12 +14,14 @@
 
 - name: Configure /etc/httpd/conf.d/kojihub.conf
   template: src=apache_kojihub.conf.j2 dest=/etc/httpd/conf.d/kojihub.conf owner=root group=root mode=0644
+  notify: httpd graceful
   tags:
     - hub
     - koji-apache-conf
 
 - name: Configure /etc/httpd/conf.d/ssl.conf
   template: src=ssl.conf.j2 dest=/etc/httpd/conf.d/ssl.conf owner=root group=root mode=0644
+  notify: httpd graceful
   tags:
     - hub
     - hub-ssl
