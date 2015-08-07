@@ -70,3 +70,14 @@
   with_items: koji_hub_kojiadmins  
   tags:
     - kojiadmin
+
+- name: Kojiadmin | Make tar to send to user
+  shell: "tar cvzf /home/{{ item }}/koji-{{ item }}.tag.gz /home/{{ item }}/.koji/client.crt /home/{{ item }}/.koji/clientca.crt /home/{{ item }}/.koji/serverca.crt"
+  args:
+    creates: "/home/{{ item }}/koji-{{ item }}.tag.gz"
+  su: yes
+  su_user: "{{ item }}"
+  with_items: koji_hub_kojiadmins
+  tags:
+    - kojiadmin
+    - kojiadmin-tar
