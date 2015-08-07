@@ -7,11 +7,15 @@ Alias /kojihub /usr/share/koji-hub/kojixmlrpc.py
 <Directory "/usr/share/koji-hub">
     Options ExecCGI
     SetHandler wsgi-script
-    #Require all granted
+{% if ansible_distribution_major_version == '7' %}
+    Require all granted
+{% endif %}
+{% if ansible_distribution_major_version == '6' %}
     #If you have httpd <= 2.2, you'll want the following two lines instead
     #of the one above:
     Order allow,deny
     Allow from all
+{% endif %}
 </Directory>
 
 # Support for mod_python is DEPRECATED. If you still need mod_python support,
@@ -30,13 +34,16 @@ Alias /kojifiles "/mnt/koji/"
 
 <Directory "/mnt/koji">
     Options Indexes
-    # AllowOverride None
-    # Require all granted
-    # TODO: Workaround this stuff in Ansible. But for now just assume it's httpd v2.2
+    AllowOverride None
+{% if ansible_distribution_major_version == '7' %}
+    Require all granted
+{% endif %}
+{% if ansible_distribution_major_version == '6' %}
     #If you have httpd <= 2.2, you'll want the following two lines instead
     #of the one above:
     Order allow,deny
     Allow from all
+{% endif %}
 </Directory>
 
 # uncomment this to enable authentication via SSL client certificates
