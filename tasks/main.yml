@@ -11,3 +11,13 @@
 - name: "add builders"
   include: "add_builders.yml"
   when: koji_hub_add_builders
+
+- name: install libsemanage-python
+  yum: name=libsemanage-python state=present
+  tags:
+    - hub
+
+- name: allow httpd connect to db
+  seboolean: name=httpd_can_network_connect_db state=yes persistent=yes
+  tags:
+    - hub
