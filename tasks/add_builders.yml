@@ -1,8 +1,8 @@
 ---
 
 - name: Add builders | Do add them to database
-  su: yes
-  su_user: kojiadmin
+  become: yes
+  become_user: kojiadmin
   shell: "/usr/bin/koji add-host {{ item }} x86_64 && touch /home/kojiadmin/.koji/.addbuilders.done"
   args:
     creates: /home/kojiadmin/.koji/.addbuilders.done
@@ -11,8 +11,8 @@
     - kojiadmin-add-hosts
 
 - name: Add builders | Add builders to channel createrepo
-  su: yes
-  su_user: kojiadmin
+  become: yes
+  become_user: kojiadmin
   shell: "/usr/bin/koji add-host-to-channel {{ item }} createrepo && touch /home/kojiadmin/.koji/.addbuilders_create_repo.done"
   args:
     creates: /home/kojiadmin/.koji/.addbuilders_create_repo.done
