@@ -5,6 +5,7 @@
   with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
+    - kojiadmin-user
 
 - name: Kojiadmin | Create /home/kojiadmin/.koji
   file: path=/home/{{ item.name }}/.koji state=directory mode=0750
