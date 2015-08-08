@@ -32,6 +32,6 @@ koji_hub_ca: ~/.koji/clientca.crt
 koji_hub_serverca: ~/.koji/serverca.crt
 
 koji_hub_kojiadmins:
-  - kojiadmin
+  - { name: 'kojiadmin' }
 
 koji_hub_issue_cert: false
