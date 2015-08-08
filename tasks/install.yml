@@ -7,9 +7,12 @@
     - httpd
     - mod_ssl
     - mod_python
+    - sudo
+    - tar
   when: ansible_distribution_major_version == '6'
   tags:
     - hub
+    - kojiadmin
 
 - name: Install | Install required Packages
   yum: name={{item}} state=installed
