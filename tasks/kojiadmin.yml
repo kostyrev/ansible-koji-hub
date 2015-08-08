@@ -56,7 +56,7 @@
 
 # But for now
 - name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/clientca.crt
-  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/{{ item }}/.koji/clientca.crt"
+  shell: "cp {{ ca_root_path }}/koji_ca_cert.crt /home/{{ item.name }}/.koji/clientca.crt"
   args:
     creates: "/home/{{ item.name }}/.koji/clientca.crt"
   with_items: koji_hub_kojiadmins
@@ -64,7 +64,7 @@
     - kojiadmin
 
 - name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/serverca.crt
-  shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/{{ item }}/.koji/serverca.crt"
+  shell: "cp {{ ca_root_path }}/koji_ca_cert.crt /home/{{ item.name }}/.koji/serverca.crt"
   args:
     creates: "/home/{{ item.name }}/.koji/serverca.crt"
   with_items: koji_hub_kojiadmins  
