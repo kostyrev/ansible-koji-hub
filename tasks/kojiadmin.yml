@@ -1,23 +1,23 @@
 ---
 
 - name: Kojiadmin | Create kojiadmin user
-  user: name={{ item }} state=present
+  user: name={{ item.name }} state=present
   with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
 
 - name: Kojiadmin | Create /home/kojiadmin/.koji
-  file: path=/home/{{ item }}/.koji state=directory mode=0750
-  su: yes
-  su_user: "{{ item }}"
+  file: path=/home/{{ item.name }}/.koji state=directory mode=0750
+  become: yes
+  become_user: "{{ item.name }}"
   with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
 
 - name: issue cert for kojiadmin
-  shell: "{{ ca_root_path }}/certgen.sh {{ item }}"
+  shell: "{{ ca_root_path }}/certgen.sh {{ item.name }} {{ item.email | default('') }}"
   args:
-    creates: "{{ ca_root_path }}/certs/{{ item }}.crt"
+    creates: "{{ ca_root_path }}/certs/{{ item.name }}.crt"
     chdir: "{{ ca_root_path }}"
   with_items: koji_hub_kojiadmins
   tags:
@@ -25,9 +25,9 @@
     - kojiadmin-cert
 
 - name: make p12 cert for kojiadmin for importing to web-browser
-  shell: "{{ ca_root_path }}/webcertgen.sh {{ item }}"
+  shell: "{{ ca_root_path }}/webcertgen.sh {{ item.name }}"
   args:
-    creates: "{{ ca_root_path }}/webcerts/{{ item }}_browser_cert.p12"
+    creates: "{{ ca_root_path }}/webcerts/{{ item.name }}_browser_cert.p12"
     chdir: "{{ ca_root_path }}"
   with_items: koji_hub_kojiadmins
   tags:
@@ -36,9 +36,9 @@
     - kojiadmin-p12
 
 - name: Kojiadmin | Copy kojiadmin pem file to ~/.koji/client.crt
-  shell: "cp -p /etc/pki/koji/pems/{{ item }}.pem /home/{{ item }}/.koji/client.crt"
+  shell: "cp -p {{ ca_root_path }}/pems/{{ item.name }}.pem /home/{{ item.name }}/.koji/client.crt"
   args:
-    creates: "/home/{{ item }}/.koji/client.crt"
+    creates: "/home/{{ item.name }}/.koji/client.crt"
   with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
@@ -58,7 +58,7 @@
 - name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/clientca.crt
   shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/{{ item }}/.koji/clientca.crt"
   args:
-    creates: "/home/{{ item }}/.koji/clientca.crt"
+    creates: "/home/{{ item.name }}/.koji/clientca.crt"
   with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
@@ -66,17 +66,17 @@
 - name: Kojiadmin | Copy CA cert to /home/kojiadmin/.koji/serverca.crt
   shell: "cp /etc/pki/koji/koji_ca_cert.crt /home/{{ item }}/.koji/serverca.crt"
   args:
-    creates: "/home/{{ item }}/.koji/serverca.crt"
+    creates: "/home/{{ item.name }}/.koji/serverca.crt"
   with_items: koji_hub_kojiadmins  
   tags:
     - kojiadmin
 
 - name: Kojiadmin | Make tar to send to user
-  shell: "tar cvzf /home/{{ item }}/koji-{{ item }}.tag.gz /home/{{ item }}/.koji/client.crt /home/{{ item }}/.koji/clientca.crt /home/{{ item }}/.koji/serverca.crt"
+  shell: "tar cvzf /home/{{ item.name }}/koji-{{ item.name }}.tar.gz {{ ca_root_path }}/webcerts/{{ item.name }}_browser_cert.p12 /home/{{ item.name }}/.koji/client.crt /home/{{ item.name }}/.koji/clientca.crt /home/{{ item.name }}/.koji/serverca.crt"
   args:
-    creates: "/home/{{ item }}/koji-{{ item }}.tag.gz"
-  su: yes
-  su_user: "{{ item }}"
+    creates: "/home/{{ item.name }}/koji-{{ item.name }}.tar.gz"
+  become: yes
+  become_user: "{{ item.name }}"
   with_items: koji_hub_kojiadmins
   tags:
     - kojiadmin
