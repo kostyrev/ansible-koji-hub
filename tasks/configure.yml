@@ -25,6 +25,7 @@
   tags:
     - hub
     - hub-ssl
+    - koji-apache-conf
 
 - name: Make kojiDir directory
   file: path={{ koji_hub_KojiDir }} state=directory mode=0755 owner=root group=root
@@ -43,9 +44,19 @@
     - hub
     - dirs
 
+- name: issue cert for koji-hub
+  shell: "{{ ca_root_path }}/certgen.sh {{ ansible_fqdn }}"
+  args:
+    creates: "{{ ca_root_path }}/certs/{{ ansible_fqdn }}.crt"
+    chdir: "{{ ca_root_path }}"
+  when: koji_hub_issue_cert
+  tags:
+    - hub
+
 - name: "Ensure httpd is running"
   service: name=httpd state=started enabled=yes
   tags:
     - hub
     - hub-service
+    - koji-apache-conf
 
