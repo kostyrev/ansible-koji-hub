@@ -23,6 +23,7 @@ koji_hub_KojiWebURL: http://{{ hostvars[groups['koji_web'][0]]['inventory_hostna
 koji_hub_NotifyOnSuccess: True
 koji_hub_KojiDebug: Off
 koji_hub_KojiTraceback: normal
+koji_hub_policy_build_from_srpm: true
 
 # defaults for /etc/koji.conf
 koji_hub_server: http://{{ hostvars[groups['koji_hub'][0]]['inventory_hostname'] }}/kojihub

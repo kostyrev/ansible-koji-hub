@@ -11,3 +11,7 @@ NotifyOnSuccess = {{ koji_hub_NotifyOnSuccess }}
 ProxyDNs = {{ koji_hub_ProxyDNs }}
 KojiDebug = {{ koji_hub_KojiDebug }}
 KojiTraceback = {{ koji_hub_KojiTraceback }}
+{% if koji_hub_policy_build_from_srpm is defined %}
+[policy]
+build_from_srpm = all :: allow
+{% endif %}
