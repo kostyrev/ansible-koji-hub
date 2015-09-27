@@ -33,7 +33,7 @@ Alias /kojihub /usr/share/koji-hub/kojixmlrpc.py
 Alias /kojifiles "/mnt/koji/"
 
 <Directory "/mnt/koji">
-    Options Indexes
+    Options Indexes FollowSymLinks
     AllowOverride None
 {% if ansible_distribution_major_version == '7' %}
     Require all granted
