@@ -36,6 +36,14 @@
     - kojiadmin-cert
     - kojiadmin-p12
 
+- name: Kojiadmin | Copy kojiadmin p12 file to ~/.koji/webcert.p12
+  shell: "cp -p {{ ca_root_path }}/webcerts/{{ item.name }}_browser_cert.p12 /home/{{ item.name }}/.koji/webcert.p12"
+  args:
+    creates: "/home/{{ item.name }}/.koji/webcert.p12"
+  with_items: koji_hub_kojiadmins
+  tags:
+    - kojiadmin
+
 - name: Kojiadmin | Copy kojiadmin pem file to ~/.koji/client.crt
   shell: "cp -p {{ ca_root_path }}/pems/{{ item.name }}.pem /home/{{ item.name }}/.koji/client.crt"
   args:
@@ -73,7 +81,7 @@
     - kojiadmin
 
 - name: Kojiadmin | Make tar to send to user
-  shell: "tar cvzf /home/{{ item.name }}/koji-{{ item.name }}.tar.gz {{ ca_root_path }}/webcerts/{{ item.name }}_browser_cert.p12 /home/{{ item.name }}/.koji/client.crt /home/{{ item.name }}/.koji/clientca.crt /home/{{ item.name }}/.koji/serverca.crt"
+  shell: "tar cvzf /home/{{ item.name }}/koji-{{ item.name }}.tar.gz /home/{{ item.name }}/.koji/webcert.p12 /home/{{ item.name }}/.koji/client.crt /home/{{ item.name }}/.koji/clientca.crt /home/{{ item.name }}/.koji/serverca.crt"
   args:
     creates: "/home/{{ item.name }}/koji-{{ item.name }}.tar.gz"
   become: yes
