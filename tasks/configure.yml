@@ -53,6 +53,23 @@
   tags:
     - hub
 
+- name: install libsemanage-python
+  yum: name={{ item }} state=present
+  when: "ansible_selinux.status == 'enabled'"
+  with_items:
+    - libselinux-python
+    - libsemanage-python
+  tags:
+    - hub
+    - selinux
+
+- name: allow httpd connect to db
+  seboolean: name=httpd_can_network_connect_db state=yes persistent=yes
+  when: "ansible_selinux.status == 'enabled'"
+  tags:
+    - hub
+    - selinux
+
 - name: "Ensure httpd is running"
   service: name=httpd state=started enabled=yes
   tags:
