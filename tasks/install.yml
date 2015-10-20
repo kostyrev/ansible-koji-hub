@@ -20,6 +20,7 @@
     - koji-hub
     - httpd
     - mod_ssl
+    - python-simplejson
   when: ansible_distribution_major_version == '7'
   tags:
     - hub
