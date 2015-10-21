@@ -24,7 +24,7 @@ TransferLog logs/ssl_access_log
 LogLevel warn
 
 SSLEngine on
-SSLProtocol all -SSLv2
+SSLProtocol all -SSLv2 -SSLv3
 {% if ansible_distribution_major_version == '7' %}
 SSLOptions +LegacyDNStringFormat
 {% endif %}
