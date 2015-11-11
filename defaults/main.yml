@@ -4,6 +4,7 @@ koji_hub_ssl: true
 koji_hub_create_kojiadmin: true
 koji_hub_add_builders: false
 
+koji_hub_force_kojifiles_over_ssl: false
 koji_hub_SSLCertificateFile: /etc/pki/koji/certs/{{ ansible_fqdn }}.crt
 koji_hub_SSLCertificateKeyFile: /etc/pki/koji/private/{{ ansible_fqdn }}.key
 koji_hub_SSLCertificateChainFile: /etc/pki/koji/koji_ca_cert.crt
