@@ -73,7 +73,7 @@
     - selinux
 
 - name: allow koji write stuff
-  seboolean: name=allow_httpd_anon_write state=yes persistent=yes
+  seboolean: name=httpd_anon_write state=yes persistent=yes
   when: "ansible_selinux.status == 'enabled'"
   tags:
     - hub
