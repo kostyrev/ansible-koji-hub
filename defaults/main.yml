@@ -26,13 +26,6 @@ koji_hub_KojiDebug: Off
 koji_hub_KojiTraceback: normal
 koji_hub_policy_build_from_srpm: true
 
-# defaults for /etc/koji.conf
-koji_hub_server: http://{{ hostvars[groups['koji_hub'][0]]['inventory_hostname'] }}/kojihub
-koji_hub_topurl: http://{{ hostvars[groups['koji_hub'][0]]['inventory_hostname'] }}/kojifiles
-koji_hub_cert: ~/.koji/client.crt
-koji_hub_ca: ~/.koji/clientca.crt
-koji_hub_serverca: ~/.koji/serverca.crt
-
 koji_hub_kojiadmins:
   - { name: 'kojiadmin' }
 

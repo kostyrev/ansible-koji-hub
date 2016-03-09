@@ -6,11 +6,6 @@
     - hub
     - koji-hub-conf
     - koji-hub-config
-- name: Configure /etc/koji.conf
-  template: src=koji.conf.j2 dest=/etc/koji.conf owner=root group=root mode=0644
-  tags:
-    - hub
-    - koji-conf
 
 - name: Configure /etc/httpd/conf.d/kojihub.conf
   template: src=apache_kojihub.conf.j2 dest=/etc/httpd/conf.d/kojihub.conf owner=root group=root mode=0644
