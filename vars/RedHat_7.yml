@@ -1,1 +1,3 @@
 koji_hub_httpd_allow_anon_write_name: httpd_anon_write
+koji_hub_packages:
+  - python-simplejson

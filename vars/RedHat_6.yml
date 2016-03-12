@@ -1,1 +1,3 @@
 koji_hub_httpd_allow_anon_write_name: allow_httpd_anon_write
+koji_hub_packages:
+  - mod_python

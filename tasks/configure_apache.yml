@@ -1,0 +1,37 @@
+---
+
+- name: Configure /etc/httpd/conf.d/kojihub.conf
+  template:
+    src: apache_kojihub.conf.j2
+    dest: /etc/httpd/conf.d/kojihub.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: httpd graceful
+  tags:
+    - hub
+    - koji-apache-conf
+    - koji-hub-config
+
+- name: Configure /etc/httpd/conf.d/ssl.conf
+  template:
+    src: ssl.conf.j2
+    dest: /etc/httpd/conf.d/ssl.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: httpd graceful
+  tags:
+    - hub
+    - hub-ssl
+    - koji-apache-conf
+    - koji-hub-config
+
+- include: check_certificates.yml
+  vars:
+    cert_file: "{{ item }}"
+  with_items:
+    - "{{ koji_hub_SSLCertificateFile }}"
+    - "{{ koji_hub_SSLCertificateKeyFile }}"
+    - "{{ koji_hub_SSLCertificateChainFile }}"
+    - "{{ koji_hub_SSLCACertificateFile }}"

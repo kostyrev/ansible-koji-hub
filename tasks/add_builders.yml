@@ -6,7 +6,7 @@
   shell: "/usr/bin/koji add-host {{ item }} x86_64 && touch /home/kojiadmin/.koji/.addbuilders.done"
   args:
     creates: /home/kojiadmin/.koji/.addbuilders.done
-  with_items: groups.koji_builder
+  with_items: "{{ groups.koji_builder }}"
   tags:
     - kojiadmin-add-hosts
 
@@ -16,6 +16,6 @@
   shell: "/usr/bin/koji add-host-to-channel {{ item }} createrepo && touch /home/kojiadmin/.koji/.addbuilders_create_repo.done"
   args:
     creates: /home/kojiadmin/.koji/.addbuilders_create_repo.done
-  with_items: groups.koji_builder
+  with_items: "{{ groups.koji_builder }}"
   tags:
     - kojiadmin-add-hosts

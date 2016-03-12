@@ -1,6 +1,17 @@
 ---
 # tasks file for koji-hub
 
+- name: Set OS dependent variables
+  include_vars: "{{ item }}"
+  with_first_found:
+   - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml"
+   - "{{ ansible_distribution }}.yml"
+   - "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
+   - "{{ ansible_os_family }}.yml"
+   - default.yml
+  tags:
+    - always
+
 - include: "install.yml"
 
 - include: "configure.yml"
@@ -8,6 +19,5 @@
 - include: "kojiadmin.yml"
   when: koji_hub_create_kojiadmin
 
-- name: "add builders"
-  include: "add_builders.yml"
+- include: "add_builders.yml"
   when: koji_hub_add_builders

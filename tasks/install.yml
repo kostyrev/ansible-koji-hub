@@ -1,26 +1,23 @@
 ---
 
-- name: Install | Install required Packages
-  yum: name={{item}} state=installed
+- name: Install | Install common packages
+  package:
+    name: "{{ item }}"
+    state: present
   with_items:
-    - koji-hub
-    - httpd
-    - mod_ssl
-    - mod_python
-    - sudo
     - tar
-  when: ansible_distribution_major_version == '6'
-  tags:
-    - hub
-    - kojiadmin
-
-- name: Install | Install required Packages
-  yum: name={{item}} state=installed
-  with_items:
     - koji-hub
     - httpd
     - mod_ssl
-    - python-simplejson
-  when: ansible_distribution_major_version == '7'
   tags:
     - hub
+    - hub-packages
+
+- name: Install | Install required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ koji_hub_packages }}"
+  tags:
+    - hub
+    - hub-packages

@@ -22,7 +22,7 @@ Alias /kojihub /usr/share/koji-hub/kojixmlrpc.py
 Alias /kojifiles "/mnt/koji/"
 
 <Directory "/mnt/koji">
-    Options Indexes FollowSymLinks
+    Options Indexes SymLinksIfOwnerMatch
     AllowOverride None
 {% if ansible_distribution_major_version == '7' %}
     Require all granted
@@ -33,10 +33,11 @@ Alias /kojifiles "/mnt/koji/"
     Order allow,deny
     Allow from all
 {% endif %}
+
 {% if koji_hub_force_kojifiles_over_ssl %}
 RewriteEngine On
 RewriteCond %{HTTPS} off
-RewriteCond %{REMOTE_ADDR} !^{{ ansible_eth0.ipv4.address | regex_replace('\.','\\.') }}$
+RewriteCond %{REMOTE_ADDR} !^{{ ansible_default_ipv4.address | regex_replace('\.','\\.') }}$
 RewriteRule ^/?(.*) https://%{SERVER_NAME}/kojifiles/$1 [R,L]
 {% endif %}
 </Directory>

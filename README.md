@@ -1,22 +1,36 @@
-Role Name
+koji-hub
 =========
 
-Docs are coming soon for now just visit https://github.com/kostyrevaa/ansible-koji-infra
+This role configures koji-hub.
 
-Requirements
-------------
+This is one of the koji- roles which configures the whole koji stack.
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Roles are:
+
+ * [koji-ca] (https://galaxy.ansible.com/kostyrevaa/koji-ca)
+ * [koji-db] (https://galaxy.ansible.com/kostyrevaa/koji-db)
+ * [koji-client] (https://galaxy.ansible.com/kostyrevaa/koji-client)
+ * [koji-hub] (https://galaxy.ansible.com/kostyrevaa/koji-hub)
+ * [koji-web] (https://galaxy.ansible.com/kostyrevaa/koji-web)
+ * [koji-kojira] (https://galaxy.ansible.com/kostyrevaa/koji-kojira)
+ * [koji-builder] (https://galaxy.ansible.com/kostyrevaa/koji-builder)
+
+For example of all-in-one setup go to https://github.com/kostyrevaa/ansible-koji-infra
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+There are some variables in the default/main.yml which can (or needs to) be changed/overriden:
+
+* `koji_dbname`: DB name for koji setup. Default is koji.
+
+* `koji_db_user`: DB's user that owns koji schema. Default is koji.
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* [koji-client](https://galaxy.ansible.com/kostyrevaa/koji-client)
 
 Example Playbook
 ----------------

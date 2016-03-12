@@ -1,46 +1,38 @@
 ---
 
-- name: Set OS dependent variables
-  include_vars: "{{ item }}"
-  with_first_found:
-   - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml"
-   - "{{ ansible_distribution }}.yml"
-   - "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
-   - "{{ ansible_os_family }}.yml"
-   - default.yml
-
 - name: Configure hub.conf
-  template: src=hub.conf.j2 dest=/etc/koji-hub/hub.conf owner=root group=root mode=0644
+  template:
+    src: hub.conf.j2
+    dest: /etc/koji-hub/hub.conf
+    owner: root
+    group: root
+    mode: 0644
   tags:
     - hub
     - koji-hub-conf
     - koji-hub-config
 
-- name: Configure /etc/httpd/conf.d/kojihub.conf
-  template: src=apache_kojihub.conf.j2 dest=/etc/httpd/conf.d/kojihub.conf owner=root group=root mode=0644
-  notify: httpd graceful
-  tags:
-    - hub
-    - koji-apache-conf
-    - koji-hub-config
-
-- name: Configure /etc/httpd/conf.d/ssl.conf
-  template: src=ssl.conf.j2 dest=/etc/httpd/conf.d/ssl.conf owner=root group=root mode=0644
-  notify: httpd graceful
-  tags:
-    - hub
-    - hub-ssl
-    - koji-apache-conf
-    - koji-hub-config
+- include: configure_apache.yml
+  tags: koji-apache-conf
 
 - name: Make kojiDir directory
-  file: path={{ koji_hub_KojiDir }} state=directory mode=0755 owner=root group=root
+  file:
+    path: "{{ koji_hub_KojiDir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
   tags:
     - hub
     - dirs
 
 - name: Make directory tree for koji in kojiDir
-  file: path={{ koji_hub_KojiDir }}/{{ item }} state=directory mode=0755 owner=apache group=apache
+  file:
+    path: "{{ koji_hub_KojiDir }}/{{ item }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0755
   with_items:
     - packages
     - repos
@@ -59,29 +51,8 @@
   tags:
     - hub
 
-- name: install libsemanage-python
-  yum: name={{ item }} state=present
+- include: selinux.yml
   when: "ansible_selinux.status == 'enabled'"
-  with_items:
-    - libselinux-python
-    - libsemanage-python
-  tags:
-    - hub
-    - selinux
-
-- name: allow httpd connect to db
-  seboolean: name=httpd_can_network_connect_db state=yes persistent=yes
-  when: "ansible_selinux.status == 'enabled'"
-  tags:
-    - hub
-    - selinux
-
-- name: allow koji write stuff
-  seboolean: name="{{ koji_hub_httpd_allow_anon_write_name }}" state=yes persistent=yes
-  when: "ansible_selinux.status == 'enabled'"
-  tags:
-    - hub
-    - selinux
 
 - name: "Ensure httpd is running"
   service: name=httpd state=started enabled=yes
@@ -89,4 +60,5 @@
     - hub
     - hub-service
     - koji-apache-conf
+    - koji-service
 

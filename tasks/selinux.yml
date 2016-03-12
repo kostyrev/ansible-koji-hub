@@ -1,0 +1,27 @@
+---
+
+- block:
+
+  - name: install libsemanage-python
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - libselinux-python
+      - libsemanage-python
+
+  - name: allow httpd connect to db by setting setsebooling httpd_can_network_connect_db
+    seboolean:
+      name: httpd_can_network_connect_db
+      state: yes
+      persistent: yes
+
+  - name: allow koji write stuff by setting setsebooling {{ koji_hub_httpd_allow_anon_write_name }}
+    seboolean:
+      name: "{{ koji_hub_httpd_allow_anon_write_name }}"
+      state: yes
+      persistent: yes
+
+  tags:
+    - hub
+    - selinux

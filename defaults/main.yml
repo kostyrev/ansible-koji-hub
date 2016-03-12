@@ -4,11 +4,14 @@ koji_hub_ssl: true
 koji_hub_create_kojiadmin: true
 koji_hub_add_builders: false
 
+koji_hub_ca_base_path: /etc/pki/koji
+koji_hub_ca_cert_path: "{{ koji_hub_ca_base_path }}/koji_ca_cert.crt"
+
 koji_hub_force_kojifiles_over_ssl: false
 koji_hub_SSLCertificateFile: /etc/pki/koji/certs/{{ ansible_fqdn }}.crt
 koji_hub_SSLCertificateKeyFile: /etc/pki/koji/private/{{ ansible_fqdn }}.key
-koji_hub_SSLCertificateChainFile: /etc/pki/koji/koji_ca_cert.crt
-koji_hub_SSLCACertificateFile: /etc/pki/koji/koji_ca_cert.crt
+koji_hub_SSLCertificateChainFile: "{{ koji_hub_ca_cert_path }}"
+koji_hub_SSLCACertificateFile: "{{ koji_hub_ca_cert_path }}"
 koji_hub_SSLVerifyClient: require
 koji_hub_SSLVerifyDepth: 10
 
@@ -30,3 +33,4 @@ koji_hub_kojiadmins:
   - { name: 'kojiadmin' }
 
 koji_hub_issue_cert: false
+koji_hub_issue_cert_for_kojiadmins: true
