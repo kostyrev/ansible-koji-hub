@@ -1,23 +1,27 @@
 ---
 
-- name: Install | Install common packages
+- name: Main | Install {{ koji_hub_package }}
+  package:
+    name: "{{ koji_hub_package }}"
+    state: present
+
+- name: Install | Install deps
   package:
     name: "{{ item }}"
     state: present
   with_items:
     - tar
-    - koji-hub
     - httpd
     - mod_ssl
   tags:
     - hub
     - hub-packages
 
-- name: Install | Install required packages
+- name: Install | Install additional OS-specific packages
   package:
     name: "{{ item }}"
     state: present
-  with_items: "{{ koji_hub_packages }}"
+  with_items: "{{ koji_hub_additional_packages }}"
   tags:
     - hub
     - hub-packages
