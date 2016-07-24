@@ -5,7 +5,7 @@
     src: hub.conf.j2
     dest: /etc/koji-hub/hub.conf
     owner: root
-    group: root
+    group: apache
     mode: '0640'
   tags:
     - hub
