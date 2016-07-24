@@ -64,10 +64,11 @@
   when: "ansible_selinux.status == 'enabled'"
 
 - name: "Ensure httpd is running"
-  service: name=httpd state=started enabled=yes
+  service: name=httpd state=restarted enabled=yes
   tags:
     - hub
     - hub-service
     - koji-apache-conf
     - koji-service
 
+- meta: flush_handlers
