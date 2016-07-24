@@ -61,7 +61,7 @@
     - "{{ koji_hub_SSLCACertificateFile }}"
 
 - include: selinux.yml
-  when: "ansible_selinux.status == 'enabled'"
+  when: ansible_selinux.config_mode == "enforcing" and ansible_selinux.status == "enabled"
 
 - name: "Ensure httpd is running"
   service: name=httpd state=restarted enabled=yes
