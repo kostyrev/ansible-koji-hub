@@ -19,6 +19,10 @@ EmailDomain = {{ koji_hub_email_domain }}
 {% endif %}
 
 NotifyOnSuccess = {{ koji_hub_NotifyOnSuccess }}
+{% if koji_hub_DisableNotifications is not none %}
+## Disables all notifications
+DisableNotifications = True
+{% endif %}
 
 DNUsernameComponent = CN
 ProxyDNs = {{ koji_hub_ProxyDNs }}

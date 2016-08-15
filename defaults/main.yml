@@ -27,6 +27,7 @@ koji_hub_ProxyDNs: /C={{ hostvars[groups['koji_ca'][0]]['countryName_default'] }
 koji_hub_LoginCreatesUser: "On"
 koji_hub_KojiWebURL: http://{{ hostvars[groups['koji_web'][0]]['inventory_hostname'] }}/koji
 koji_hub_NotifyOnSuccess: True
+koji_hub_DisableNotifications: !!null
 koji_hub_KojiDebug: Off
 koji_hub_KojiTraceback: normal
 koji_hub_policy_build_from_srpm: true
